@@ -1,12 +1,25 @@
-import logging; logging.basicConfig(level=logging.INFO)
+import logging;
+
+
+
+logging.basicConfig(level=logging.INFO)
 
 import asyncio, os, json, time
 from datetime import datetime
 
 from aiohttp import web
-
+from www.coroweb import get
+from www.models import User
+@get('/')
 def index(request):
-    return web.Response(body=b'<h1>Awesome</h1>', content_type='text/html')
+    users = yield from User.findAll()
+    return {
+        '__template__': 'test.html',
+        'users': users
+    }
+#
+# def index(request):
+#     return web.Response(body=b'<h1>Awesome</h1>', content_type='text/html')
 
 @asyncio.coroutine
 def init(loop):
