@@ -1,17 +1,11 @@
-from www.models import User
-
-__author__ = 'wuchen'
-
 import asyncio, os, inspect, logging, functools
+
 from urllib import parse
 
 from aiohttp import web
 
-from www.apis import APIError
+from apis import APIError
 
-
-
-#定义@get()
 def get(path):
     '''
     Define decorator @get('/path')
@@ -25,8 +19,7 @@ def get(path):
         return wrapper
     return decorator
 
-#定义@post()
-def get(path):
+def post(path):
     '''
     Define decorator @post('/path')
     '''
@@ -34,7 +27,7 @@ def get(path):
         @functools.wraps(func)
         def wrapper(*args, **kw):
             return func(*args, **kw)
-        wrapper.__method__ = 'GET'
+        wrapper.__method__ = 'POST'
         wrapper.__route__ = path
         return wrapper
     return decorator
@@ -173,13 +166,3 @@ def add_routes(app, module_name):
             path = getattr(fn, '__route__', None)
             if method and path:
                 add_route(app, fn)
-
-@get('/')
-def index(request):
-    users = yield from User.findAll()
-    return {
-        '__template__': 'test.html',
-        'users': users
-    }
-
-
