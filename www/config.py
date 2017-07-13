@@ -1,3 +1,4 @@
+
 import config_default
 
 class Dict(dict):
